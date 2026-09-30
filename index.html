@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DikaDev Store — Solusi Digital</title>
+  <meta name="description" content="DikaDev Store — hosting game server, VPS, jasa website, dan layanan digital lainnya." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="logo" href="#beranda">&lt;/&gt; DikaDev</a>
+      <nav class="nav-links">
+        <a href="#beranda">Beranda</a>
+        <a href="#produk">Produk</a>
+        <a href="#tentang">Tentang</a>
+        <a href="#kontak">Kontak</a>
+        <a href="tos.html">S&K</a>
+      </nav>
+      <button class="cart-btn" id="cartOpen" aria-label="Buka keranjang">
+        🛒 <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="beranda">
+      <div class="hero-inner">
+        <span class="badge">Toko digital terpercaya</span>
+        <h1>Solusi Digital untuk <span class="accent">Kebutuhanmu</span></h1>
+        <p>Hosting game server, VPS, jasa pembuatan website, dan layanan digital lainnya — cepat, aman, harga bersahabat.</p>
+        <div class="hero-actions">
+          <a href="#produk" class="btn btn-primary">Lihat Produk</a>
+          <a href="#kontak" class="btn btn-ghost">Hubungi Kami</a>
+        </div>
+        <div class="hero-stats">
+          <div><strong>24/7</strong><span>Server Online</span></div>
+          <div><strong>100+</strong><span>Pelanggan Puas</span></div>
+          <div><strong>Fast</strong><span>Respon Cepat</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="products" id="produk">
+      <div class="section-inner">
+        <h2>Produk Kami</h2>
+        <p class="section-sub">Pilih layanan yang kamu butuhkan. Klik tambah untuk masuk keranjang.</p>
+        <!--
+          CARA GANTI PRODUK:
+          Buka file app.js, edit daftar PRODUK di bagian atas.
+          Format: { nama, harga (angka rupiah), deskripsi, badge (opsional) }
+        -->
+        <div class="grid" id="productGrid"></div>
+      </div>
+    </section>
+
+    <section class="about" id="tentang">
+      <div class="section-inner">
+        <h2>Tentang DikaDev</h2>
+        <p>DikaDev adalah toko layanan digital yang fokus pada kebutuhan gamer, developer, dan pemilik bisnis kecil. Kami mengutamakan server yang stabil, harga transparan tanpa biaya tersembunyi, dan bantuan teknis yang responsif.</p>
+        <div class="features">
+          <div class="feature"><span>⚡</span><h3>Cepat</h3><p>Aktivasi layanan maksimal 1x24 jam setelah pembayaran.</p></div>
+          <div class="feature"><span>🔒</span><h3>Aman</h3><p>Data dan server kamu dilindungi dengan standar keamanan modern.</p></div>
+          <div class="feature"><span>💬</span><h3>Support</h3><p>Butuh bantuan? Tim kami siap lewat WhatsApp setiap hari.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="kontak">
+      <div class="section-inner">
+        <h2>Hubungi Kami</h2>
+        <p class="section-sub">Punya pertanyaan soal produk? Chat aja langsung.</p>
+        <a class="btn btn-primary" id="waButton" href="#" target="_blank" rel="noopener">💬 Chat WhatsApp</a>
+        <a class="btn btn-ghost" id="emailButton" href="#">✉️ Email Kami</a>
+        <p class="note">Jam operasional: 09.00 – 21.00 WIB</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 DikaDev Store. Seluruh hak cipta dilindungi.</p>
+    <p style="margin-top:8px">
+      <a href="tos.html" style="color:var(--accent); text-decoration:none; margin:0 8px">Syarat & Ketentuan</a>·
+      <a href="mailto:andhikaadi777@gmail.com" style="color:var(--accent); text-decoration:none; margin:0 8px">andhikaadi777@gmail.com</a>·
+      <a href="https://wa.me/6281337612241" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none; margin:0 8px">WhatsApp</a>
+    </p>
+  </footer>
+
+  <!-- Drawer keranjang -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="drawer" aria-label="Keranjang belanja">
+    <div class="drawer-head">
+      <h3>Keranjang</h3>
+      <button class="close-btn" id="cartClose" aria-label="Tutup keranjang">✕</button>
+    </div>
+    <div class="drawer-items" id="cartItems"></div>
+    <div class="drawer-foot">
+      <div class="total-row"><span>Total</span><strong id="cartTotal">Rp0</strong></div>
+      <button class="btn btn-primary btn-full" id="checkoutBtn">Checkout via WhatsApp</button>
+      <button class="btn btn-ghost btn-full" id="clearBtn">Kosongkan</button>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast">Ditambahkan ke keranjang ✓</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
