@@ -137,6 +137,50 @@ function toast(msg) {
   toastTimer = setTimeout(() => t.classList.remove("show"), 1800);
 }
 
+/* ---------- FAQ ---------- */
+const FAQ = [
+  { q: "Bagaimana cara memesan?",
+    a: `Pilih produk lalu klik "+ Keranjang". Buka keranjang, klik "Checkout via WhatsApp" — pesan order otomatis terkirim ke kami. Selanjutnya tinggal ikuti instruksi pembayaran di chat.` },
+  { q: "Metode pembayaran apa saja yang diterima?",
+    a: `Transfer bank dan e-wallet (DANA, OVO, GoPay, dll). Metode final disepakati saat chat WhatsApp setelah kamu checkout.` },
+  { q: "Berapa lama layanan diproses?",
+    a: `Maksimal 1x24 jam setelah pembayaran terkonfirmasi. Kebanyakan order selesai jauh lebih cepat dari itu.` },
+  { q: "Apakah ada garansi?",
+    a: `Ya. Jasa install dan produk panel bergaransi 7 hari untuk kendala teknis dari sisi instalasi kami. Klaim garansi cukup chat WhatsApp.` },
+  { q: "Bagaimana jika layanan tidak terkirim?",
+    a: `Kamu berhak atas refund penuh jika layanan gagal diserahkan karena kesalahan dari pihak kami. Detail lengkapnya ada di halaman <a href="refund.html">Kebijakan Refund</a>.` },
+  { q: "Apakah data pribadi saya aman?",
+    a: `Aman. Data (nama, nomor WA, email) hanya dipakai untuk memproses pesanan dan tidak dijual ke pihak ketiga. Selengkapnya di <a href="tos.html">Kebijakan Privasi</a>.` },
+  { q: "Nomor virtual cara pakainya bagaimana?",
+    a: `Setelah pembayaran, kamu menerima nomor virtualnya. Pakai nomor itu untuk menerima kode OTP/verifikasi di WhatsApp, Telegram, atau aplikasi lain yang didukung.` },
+];
+
+function renderFaq() {
+  const list = $("faqList");
+  if (!list) return;
+  list.innerHTML = FAQ.map((f, i) => `
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(${i})" aria-expanded="false">${f.q}<span class="arrow">▼</span></button>
+      <div class="faq-a" id="faqA${i}"><p>${f.a}</p></div>
+    </div>`).join("");
+}
+
+function toggleFaq(i) {
+  document.querySelectorAll(".faq-item").forEach((el, j) => {
+    const ans = $("faqA" + j);
+    const btn = el.querySelector(".faq-q");
+    if (j === i) {
+      const open = el.classList.toggle("open");
+      ans.style.maxHeight = open ? ans.scrollHeight + "px" : "0";
+      btn.setAttribute("aria-expanded", open);
+    } else {
+      el.classList.remove("open");
+      ans.style.maxHeight = "0";
+      btn.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
 /* ---------- Init ---------- */
 $("cartOpen").onclick = () => bukaDrawer(true);
 $("cartClose").onclick = () => bukaDrawer(false);
@@ -148,4 +192,5 @@ const mailBtn = $("emailButton");
 if (mailBtn) mailBtn.href = `mailto:${EMAIL}?subject=${encodeURIComponent("Tanya-tanya DikaDev Store")}`;
 
 renderProduk();
+renderFaq();
 renderKeranjang();
