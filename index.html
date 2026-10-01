@@ -111,13 +111,16 @@
     <div class="drawer-items" id="cartItems"></div>
     <div class="drawer-foot">
       <div class="total-row"><span>Total</span><strong id="cartTotal">Rp0</strong></div>
-      <button class="btn btn-primary btn-full" id="checkoutBtn">Checkout via WhatsApp</button>
+      <button class="btn btn-primary btn-full" id="payBtn">💳 Bayar Sekarang</button>
+      <div class="pay-status" id="payStatus" hidden></div>
+      <button class="btn btn-ghost btn-full" id="checkoutBtn">Checkout via WhatsApp</button>
       <button class="btn btn-ghost btn-full" id="clearBtn">Kosongkan</button>
     </div>
   </aside>
 
   <div class="toast" id="toast">Ditambahkan ke keranjang ✓</div>
 
+  <script src="https://solosmartpay.com/embed.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
