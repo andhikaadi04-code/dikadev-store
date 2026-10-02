@@ -143,18 +143,18 @@ function ringkasanKeranjang() {
   });
 }
 
-async function bayarSekarang() {
+async function bayarSekarang(metode) {
   if (!keranjang.length) { toast("Keranjang masih kosong"); return; }
-  const btn = $("payBtn");
+  const btn = $(metode === "qris" ? "payQrisBtn" : "payBtn");
   const items = keranjang.map(k => ({ i: k.i, qty: k.qty }));
   const total = keranjang.reduce((s, k) => s + k.qty * PRODUK[k.i].harga, 0);
-  btn.disabled = true;
-  setPayStatus("Menyiapkan halaman pembayaran…");
+  if (btn) btn.disabled = true;
+  setPayStatus(metode === "qris" ? "Menyiapkan kode QRIS…" : "Menyiapkan halaman pembayaran…");
   try {
     const resp = await fetch(`${PAY_API}/create`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items }),
+      body: JSON.stringify({ items, method: metode === "qris" ? "qris" : "auto" }),
     });
     const data = await resp.json().catch(() => ({}));
     if (!resp.ok || !data.ok || !data.id) {
@@ -169,7 +169,7 @@ async function bayarSekarang() {
   } catch (err) {
     setPayStatus(`Pembayaran online belum bisa dipakai (${err.message}). Silakan pakai tombol Checkout via WhatsApp di bawah.`);
   } finally {
-    btn.disabled = false;
+    if (btn) btn.disabled = false;
   }
 }
 
@@ -278,7 +278,7 @@ const FAQ = [
   { q: "Bagaimana cara memesan?",
     a: `Pilih produk lalu klik "+ Keranjang". Buka keranjang, lalu bayar langsung dengan tombol "Bayar Sekarang", atau pilih "Checkout via WhatsApp" kalau mau tanya-tanya dulu.` },
   { q: "Metode pembayaran apa saja yang diterima?",
-    a: `Lewat tombol Bayar Sekarang: QRIS (semua e-wallet & m-banking), Virtual Account bank (BCA, Mandiri, BNI, BRI, Permata, CIMB, dll), e-wallet (OVO, DANA, ShopeePay, LinkAja), dan tunai di gerai retail (Indomaret, Alfamart, dll). Checkout via WhatsApp juga tetap bisa — metode final disepakati di chat.` },
+    a: `Lewat tombol Bayar Sekarang: Virtual Account bank (BCA, Mandiri, BNI, BRI, Permata, CIMB, dll), e-wallet (OVO, DANA, ShopeePay, LinkAja), dan tunai di gerai retail (Indomaret, Alfamart, dll). Butuh QRIS? Klik tombol "Bayar via QRIS" — bisa dipakai untuk total berapapun (fee flat Rp300, biasanya paling murah). Checkout via WhatsApp juga tetap bisa — metode final disepakati di chat.` },
   { q: "Berapa lama layanan diproses?",
     a: `Maksimal 1x24 jam setelah pembayaran terkonfirmasi. Kebanyakan order selesai jauh lebih cepat dari itu.` },
   { q: "Apakah ada garansi?",
@@ -322,7 +322,8 @@ $("cartOpen").onclick = () => bukaDrawer(true);
 $("cartClose").onclick = () => bukaDrawer(false);
 $("overlay").onclick = () => bukaDrawer(false);
 $("checkoutBtn").onclick = checkout;
-$("payBtn").onclick = bayarSekarang;
+$("payBtn").onclick = () => bayarSekarang("auto");
+$("payQrisBtn").onclick = () => bayarSekarang("qris");
 $("clearBtn").onclick = () => { keranjang = []; simpan(); };
 $("waButton").href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo DikaDev! Saya mau tanya-tanya dulu.")}`;
 const mailBtn = $("emailButton");
