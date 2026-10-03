@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cek Domain .id — DikaDev</title>
+<style>
+  :root { --bg:#f7f9fc; --card:#fff; --text:#1a2332; --muted:#6b7a90; --accent:#0ea5e9; --green:#16a34a; --red:#dc2626; --border:#e3e9f2; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+  .wrap { max-width:640px; margin:0 auto; padding:24px 16px 48px; }
+  .back { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:14px; }
+  h1 { font-size:26px; margin-bottom:6px; }
+  .sub { color:var(--muted); font-size:14px; margin-bottom:20px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; box-shadow:0 2px 10px rgba(0,0,0,.04); }
+  .searchrow { display:flex; gap:10px; }
+  input[type=text] { flex:1; padding:13px 14px; font-size:16px; border:2px solid var(--border); border-radius:10px; outline:none; min-width:0; }
+  input[type=text]:focus { border-color:var(--accent); }
+  button.cek { padding:13px 22px; font-size:15px; font-weight:700; color:#fff; background:var(--accent); border:none; border-radius:10px; cursor:pointer; white-space:nowrap; }
+  button.cek:disabled { opacity:.6; cursor:wait; }
+  .tlds { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; margin-top:14px; }
+  .tlds label { display:flex; align-items:center; gap:8px; font-size:13.5px; padding:9px 10px; border:1px solid var(--border); border-radius:9px; cursor:pointer; background:#fbfcfe; }
+  .tlds label:hover { border-color:var(--accent); }
+  .tlds input { accent-color:var(--accent); width:16px; height:16px; }
+  .tlds small { display:block; color:var(--muted); font-size:11px; }
+  #results { display:flex; flex-direction:column; gap:8px; margin-top:4px; }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; border:1px solid var(--border); border-radius:10px; background:#fbfcfe; cursor:pointer; }
+  .row:hover { border-color:var(--accent); }
+  .row .dom { font-weight:700; font-size:15px; word-break:break-all; }
+  .badge { font-size:12px; font-weight:700; padding:5px 12px; border-radius:20px; white-space:nowrap; }
+  .b-avail { background:#dcfce7; color:#15803d; }
+  .b-taken { background:#fee2e2; color:#b91c1c; }
+  .b-check { background:#e0f2fe; color:#0369a1; }
+  .b-err { background:#f1f5f9; color:#64748b; }
+  .hint { font-size:12px; color:var(--muted); text-align:center; margin-top:10px; }
+  .info { font-size:13.5px; color:var(--muted); line-height:1.7; }
+  .info b { color:var(--text); }
+  .info a { color:var(--accent); }
+  .spin { display:inline-block; width:14px; height:14px; border:2px solid #bae6fd; border-top-color:#0369a1; border-radius:50%; animation:sp 0.8s linear infinite; vertical-align:-2px; }
+  @keyframes sp { to { transform:rotate(360deg); } }
+  .prog { font-size:13px; color:var(--muted); margin:12px 0 4px; text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← Kembali ke DikaDev Store</a>
+  <h1>🔍 Cek Domain .id</h1>
+  <p class="sub">Ketik nama yang kamu mau, langsung ketahuan masih kosong atau sudah diambil — untuk ekstensi Indonesia.</p>
+
+  <div class="card">
+    <div class="searchrow">
+      <input type="text" id="name" placeholder="mis. tokoku" autocomplete="off" spellcheck="false">
+      <button class="cek" id="go">Cek</button>
+    </div>
+    <div class="tlds" id="tlds"></div>
+  </div>
+
+  <div class="prog" id="prog" style="display:none"></div>
+  <div id="results"></div>
+  <p class="hint" id="hint" style="display:none">Klik hasil untuk menyalin nama domain.</p>
+
+  <div class="card" style="margin-top:20px">
+    <p class="info">
+      <b>Catatan soal "domain gratis":</b><br>
+      <b>.web.id</b>, <b>.my.id</b>, dan <b>.biz.id</b> bukan gratis murni — harganya murah (belasan sampai puluhan ribu per tahun) di registrar rekanan PANDI seperti
+      <a href="https://www.niagahoster.co.id" target="_blank" rel="noopener">Niagahoster</a>,
+      <a href="https://www.domainesia.com" target="_blank" rel="noopener">DomaiNesia</a>, atau
+      <a href="https://www.rumahweb.com" target="_blank" rel="noopener">Rumahweb</a>.
+      Yang benar-benar <b>gratis</b> biasanya bundling <b>paket hosting + domain gratis selamanya</b> (mis. NATANETWORK dan banyak hosting lokal lain — cek syarat tiap paket).<br><br>
+      <b>Syarat singkat:</b> .my.id &amp; .biz.id bebas tanpa syarat · .web.id butuh KTP · .co.id butuh dokumen usaha (NIB/SIUP) · .id minimal 5 karakter.
+    </p>
+  </div>
+</div>
+
+<script>
+const TLDS = [
+  { t: 'my.id',   d: 'bebas, tanpa syarat' },
+  { t: 'web.id',  d: 'butuh KTP' },
+  { t: 'biz.id',  d: 'bebas, tanpa syarat' },
+  { t: 'id',      d: 'min. 5 karakter' },
+  { t: 'co.id',   d: 'butuh dokumen usaha' },
+  { t: 'or.id',   d: 'organisasi/komunitas' },
+  { t: 'ponpes.id', d: 'pondok pesantren' },
+  { t: 'sch.id',  d: 'sekolah' },
+  { t: 'ac.id',   d: 'kampus' },
+  { t: 'desa.id', d: 'desa' },
+];
+const box = document.getElementById('tlds');
+TLDS.forEach((x, i) => {
+  const l = document.createElement('label');
+  l.innerHTML = `<input type="checkbox" data-tld="${x.t}" checked><span><b>.${x.t}</b><small>${x.d}</small></span>`;
+  box.appendChild(l);
+});
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+async function checkOne(domain) {
+  const ctrl = new AbortController();
+  const to = setTimeout(() => ctrl.abort(), 15000);
+  try {
+    const res = await fetch('https://rdap.org/domain/' + domain, { signal: ctrl.signal });
+    clearTimeout(to);
+    if (res.status === 404) return 'available';
+    if (res.ok) return 'taken';
+    return 'error';
+  } catch (e) { clearTimeout(to); return 'error'; }
+}
+
+function badge(st) {
+  if (st === 'available') return '<span class="badge b-avail">✓ Tersedia</span>';
+  if (st === 'taken') return '<span class="badge b-taken">✗ Terdaftar</span>';
+  if (st === 'checking') return '<span class="badge b-check"><span class="spin"></span> Cek…</span>';
+  return '<span class="badge b-err">? Gagal cek</span>';
+}
+
+document.getElementById('go').addEventListener('click', run);
+document.getElementById('name').addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+
+async function run() {
+  const raw = document.getElementById('name').value.trim().toLowerCase().replace(/\s+/g, '');
+  if (!/^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/.test(raw)) {
+    alert('Nama domain hanya boleh huruf, angka, dan strip (-).');
+    return;
+  }
+  const sel = [...document.querySelectorAll('#tlds input:checked')].map(c => c.dataset.tld);
+  if (!sel.length) { alert('Pilih minimal satu ekstensi.'); return; }
+
+  const btn = document.getElementById('go');
+  const res = document.getElementById('results');
+  const prog = document.getElementById('prog');
+  const hint = document.getElementById('hint');
+  btn.disabled = true; btn.textContent = 'Mengecek…';
+  res.innerHTML = ''; hint.style.display = 'none'; prog.style.display = 'block';
+
+  const rows = {};
+  sel.forEach(t => {
+    const dom = raw + '.' + t;
+    const div = document.createElement('div');
+    div.className = 'row';
+    div.innerHTML = `<span class="dom">${dom}</span>${badge('checking')}`;
+    div.addEventListener('click', () => {
+      navigator.clipboard.writeText(dom).then(() => {
+        const b = div.querySelector('.badge');
+        const old = b.textContent; b.textContent = 'Disalin!';
+        setTimeout(() => b.textContent = old, 1200);
+      });
+    });
+    res.appendChild(div);
+    rows[t] = div;
+  });
+
+  let done = 0;
+  for (const t of sel) {
+    const dom = raw + '.' + t;
+    prog.textContent = `Mengecek ${done + 1}/${sel.length}…`;
+    const st = await checkOne(dom);
+    rows[t].querySelector('.badge').outerHTML = badge(st);
+    done++;
+    if (done < sel.length) await sleep(350);
+  }
+  prog.style.display = 'none';
+  hint.style.display = 'block';
+  btn.disabled = false; btn.textContent = 'Cek';
+}
+</script>
+</body>
+</html>
