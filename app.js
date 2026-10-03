@@ -289,6 +289,8 @@ const FAQ = [
     a: `Aman. Data (nama, nomor WA, email) hanya dipakai untuk memproses pesanan dan tidak dijual ke pihak ketiga. Selengkapnya di <a href="tos.html">Kebijakan Privasi</a>.` },
   { q: "Nomor virtual cara pakainya bagaimana?",
     a: `Setelah pembayaran, kamu menerima nomor virtualnya. Pakai nomor itu untuk menerima kode OTP/verifikasi di WhatsApp, Telegram, atau aplikasi lain yang didukung.` },
+  { q: "Ada CS yang bisa ditanya-tanya?",
+    a: `Ada! Chat <a href="https://t.me/csdikadevbot" target="_blank" rel="noopener">@csdikadevbot</a> di Telegram — CS AI kami yang siap jawab pertanyaan soal produk, harga, dan cara order, 24 jam nonstop. Kalau butuh bantuan manusia, tinggal lanjut ke WhatsApp admin.` },
 ];
 
 function renderFaq() {
