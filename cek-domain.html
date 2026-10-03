@@ -33,6 +33,9 @@
   .b-check { background:#e0f2fe; color:#0369a1; }
   .b-err { background:#f1f5f9; color:#64748b; }
   .hint { font-size:12px; color:var(--muted); text-align:center; margin-top:10px; }
+  .rright { display:flex; align-items:center; gap:8px; margin-left:auto; }
+  .ambil { font-size:12.5px; font-weight:700; color:#fff; background:#16a34a; padding:7px 14px; border-radius:20px; text-decoration:none; white-space:nowrap; }
+  .ambil:hover { background:#15803d; }
   .info { font-size:13.5px; color:var(--muted); line-height:1.7; }
   .info b { color:var(--text); }
   .info a { color:var(--accent); }
@@ -57,7 +60,7 @@
 
   <div class="prog" id="prog" style="display:none"></div>
   <div id="results"></div>
-  <p class="hint" id="hint" style="display:none">Klik hasil untuk menyalin nama domain.</p>
+  <p class="hint" id="hint" style="display:none">Klik hasil untuk menyalin · tombol <b>Ambil →</b> mengantar ke keranjang registrar.</p>
 
   <div class="card" style="margin-top:20px">
     <p class="info">
@@ -67,6 +70,7 @@
       <a href="https://www.domainesia.com" target="_blank" rel="noopener">DomaiNesia</a>, atau
       <a href="https://www.rumahweb.com" target="_blank" rel="noopener">Rumahweb</a>.
       Yang benar-benar <b>gratis</b> biasanya bundling <b>paket hosting + domain gratis selamanya</b> (mis. NATANETWORK dan banyak hosting lokal lain — cek syarat tiap paket).<br><br>
+      <b>Cara ambil domain:</b> tekan tombol <b>Ambil →</b> pada domain yang tersedia — kamu langsung dibawa ke keranjang registrar dengan nama domain sudah terisi, lalu lanjutkan pendaftaran &amp; pembayaran di sana (perlu bikin akun).<br><br>
       <b>Syarat singkat:</b> .my.id &amp; .biz.id bebas tanpa syarat · .web.id butuh KTP · .co.id butuh dokumen usaha (NIB/SIUP) · .id minimal 5 karakter.
     </p>
   </div>
@@ -137,10 +141,11 @@ async function run() {
     const dom = raw + '.' + t;
     const div = document.createElement('div');
     div.className = 'row';
-    div.innerHTML = `<span class="dom">${dom}</span>${badge('checking')}`;
+    div.innerHTML = `<span class="dom">${dom}</span><span class="rright">${badge('checking')}</span>`;
     div.addEventListener('click', () => {
       navigator.clipboard.writeText(dom).then(() => {
         const b = div.querySelector('.badge');
+        if (!b) return;
         const old = b.textContent; b.textContent = 'Disalin!';
         setTimeout(() => b.textContent = old, 1200);
       });
@@ -154,7 +159,18 @@ async function run() {
     const dom = raw + '.' + t;
     prog.textContent = `Mengecek ${done + 1}/${sel.length}…`;
     const st = await checkOne(dom);
-    rows[t].querySelector('.badge').outerHTML = badge(st);
+    const right = rows[t].querySelector('.rright');
+    right.innerHTML = badge(st);
+    if (st === 'available') {
+      const a = document.createElement('a');
+      a.className = 'ambil';
+      a.href = 'https://www.natanetwork.com/portal/cart.php?a=add&domain=register&query=' + encodeURIComponent(dom);
+      a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = 'Ambil →';
+      a.title = 'Lanjut daftar di registrar';
+      a.addEventListener('click', e => e.stopPropagation());
+      right.appendChild(a);
+    }
     done++;
     if (done < sel.length) await sleep(350);
   }
