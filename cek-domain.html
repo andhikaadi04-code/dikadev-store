@@ -1,37 +1,40 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cek Domain .id — DikaDev</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#f7f9fc; --card:#fff; --text:#1a2332; --muted:#6b7a90; --accent:#0ea5e9; --green:#16a34a; --red:#dc2626; --border:#e3e9f2; }
+  :root { --bg:#090A0F; --card:rgba(255,255,255,0.03); --text:#F3F4F6; --muted:#9CA3AF; --accent:#A78BFA; --green:#16a34a; --red:#dc2626; --border:rgba(255,255,255,0.08); }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
   .wrap { max-width:640px; margin:0 auto; padding:24px 16px 48px; }
   .back { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:14px; }
-  h1 { font-size:26px; margin-bottom:6px; }
+  h1 { font-size:26px; margin-bottom:6px; color:#fff; }
   .sub { color:var(--muted); font-size:14px; margin-bottom:20px; }
-  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; box-shadow:0 2px 10px rgba(0,0,0,.04); }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
   .searchrow { display:flex; gap:10px; }
-  input[type=text] { flex:1; padding:13px 14px; font-size:16px; border:2px solid var(--border); border-radius:10px; outline:none; min-width:0; }
-  input[type=text]:focus { border-color:var(--accent); }
-  button.cek { padding:13px 22px; font-size:15px; font-weight:700; color:#fff; background:var(--accent); border:none; border-radius:10px; cursor:pointer; white-space:nowrap; }
+  input[type=text] { flex:1; padding:13px 14px; font-size:16px; border:2px solid var(--border); border-radius:10px; outline:none; min-width:0; background:rgba(0,0,0,0.3); color:#fff; }
+  input[type=text]:focus { border-color:#7C3AED; }
+  button.cek { padding:13px 22px; font-size:15px; font-weight:700; color:#fff; background:linear-gradient(135deg,#7C3AED,#4F46E5); border:none; border-radius:10px; cursor:pointer; white-space:nowrap; box-shadow:0 4px 20px rgba(124,58,237,0.4); }
   button.cek:disabled { opacity:.6; cursor:wait; }
   .tlds { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; margin-top:14px; }
-  .tlds label { display:flex; align-items:center; gap:8px; font-size:13.5px; padding:9px 10px; border:1px solid var(--border); border-radius:9px; cursor:pointer; background:#fbfcfe; }
-  .tlds label:hover { border-color:var(--accent); }
-  .tlds input { accent-color:var(--accent); width:16px; height:16px; }
+  .tlds label { display:flex; align-items:center; gap:8px; font-size:13.5px; padding:9px 10px; border:1px solid var(--border); border-radius:9px; cursor:pointer; background:rgba(255,255,255,0.02); color:#D1D5DB; }
+  .tlds label:hover { border-color:#7C3AED; }
+  .tlds input { accent-color:#7C3AED; width:16px; height:16px; }
   .tlds small { display:block; color:var(--muted); font-size:11px; }
   #results { display:flex; flex-direction:column; gap:8px; margin-top:4px; }
-  .row { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; border:1px solid var(--border); border-radius:10px; background:#fbfcfe; cursor:pointer; }
-  .row:hover { border-color:var(--accent); }
-  .row .dom { font-weight:700; font-size:15px; word-break:break-all; }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,0.02); cursor:pointer; }
+  .row:hover { border-color:#7C3AED; }
+  .row .dom { font-weight:700; font-size:15px; word-break:break-all; color:#fff; }
   .badge { font-size:12px; font-weight:700; padding:5px 12px; border-radius:20px; white-space:nowrap; }
-  .b-avail { background:#dcfce7; color:#15803d; }
-  .b-taken { background:#fee2e2; color:#b91c1c; }
-  .b-check { background:#e0f2fe; color:#0369a1; }
-  .b-err { background:#f1f5f9; color:#64748b; }
+  .b-avail { background:rgba(22,163,74,0.15); color:#4ADE80; }
+  .b-taken { background:rgba(220,38,38,0.15); color:#F87171; }
+  .b-check { background:rgba(124,58,237,0.15); color:#C4B5FD; }
+  .b-err { background:rgba(255,255,255,0.06); color:#9CA3AF; }
   .hint { font-size:12px; color:var(--muted); text-align:center; margin-top:10px; }
   .rright { display:flex; align-items:center; gap:8px; margin-left:auto; flex-wrap:wrap; justify-content:flex-end; }
   .ambil { font-size:12.5px; font-weight:700; color:#fff; background:#16a34a; padding:7px 14px; border-radius:20px; text-decoration:none; white-space:nowrap; }
@@ -39,18 +42,18 @@
   .iprice { font-size:11.5px; color:var(--muted); white-space:nowrap; }
   .iprice a { color:var(--muted); text-decoration:underline dotted; }
   .info { font-size:13.5px; color:var(--muted); line-height:1.7; }
-  .info b { color:var(--text); }
+  .info b { color:#E5E7EB; }
   .info a { color:var(--accent); }
   .info ul { margin:8px 0 8px 18px; }
   .info li { margin-bottom:7px; }
-  .spin { display:inline-block; width:14px; height:14px; border:2px solid #bae6fd; border-top-color:#0369a1; border-radius:50%; animation:sp 0.8s linear infinite; vertical-align:-2px; }
+  .spin { display:inline-block; width:14px; height:14px; border:2px solid rgba(167,139,250,0.3); border-top-color:#A78BFA; border-radius:50%; animation:sp 0.8s linear infinite; vertical-align:-2px; }
   @keyframes sp { to { transform:rotate(360deg); } }
   .prog { font-size:13px; color:var(--muted); margin:12px 0 4px; text-align:center; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <a class="back" href="/">← Kembali ke DikaDev Store</a>
+  <a class="back" href="index.html">← Kembali ke DikaDev Store</a>
   <h1>🔍 Cek Domain .id</h1>
   <p class="sub">Ketik nama yang kamu mau, langsung ketahuan masih kosong atau sudah diambil — untuk ekstensi Indonesia.</p>
 

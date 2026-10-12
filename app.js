@@ -36,16 +36,18 @@ const $ = id => document.getElementById(id);
 function renderProduk() {
   $("productGrid").innerHTML = PRODUK.map((p, i) => {
     const ikon = p.logo
-      ? `<img class="logo-img" src="${p.logo}" alt="Logo ${p.nama}" loading="lazy">`
-      : `<div class="icon">${p.icon}</div>`;
+      ? `<img class="product-logo" src="${p.logo}" alt="Logo ${p.nama}" loading="lazy">`
+      : `<div class="product-emoji">${p.icon}</div>`;
     return `
-    <div class="card">
-      ${p.badge ? `<span class="tag">${p.badge}</span>` : ""}
+    <div class="glass-card glass-card-hover p-8 rounded-2xl border border-white/10 flex flex-col">
+      ${p.badge ? `<div><span class="product-badge">${p.badge}</span></div>` : ""}
       ${ikon}
-      <h3>${p.nama}</h3>
-      <p class="desc">${p.deskripsi}</p>
-      <div class="price">${p.prefix || ""}${rupiah(p.harga)}<small>${p.satuan}</small></div>
-      <button class="add-btn" onclick="tambahKeKeranjang(${i})">+ Keranjang</button>
+      <h3 class="text-xl font-bold text-white mb-2">${p.nama}</h3>
+      <p class="text-gray-400 text-sm leading-relaxed mb-6 flex-1">${p.deskripsi}</p>
+      <div class="mb-6">
+        <span class="text-sm text-gray-500">${p.prefix || ""}</span><span class="text-3xl font-extrabold text-white">${rupiah(p.harga)}</span><span class="text-gray-400 text-sm">${p.satuan}</span>
+      </div>
+      <button class="gradient-button w-full text-white font-semibold py-3 rounded-xl" onclick="tambahKeKeranjang(${i})">+ Keranjang</button>
     </div>`;
   }).join("");
 }
@@ -84,6 +86,8 @@ function renderKeranjang() {
   const count = keranjang.reduce((s, k) => s + k.qty, 0);
   const total = keranjang.reduce((s, k) => s + k.qty * PRODUK[k.i].harga, 0);
   $("cartCount").textContent = count;
+  const cartCountMobile = $("cartCountMobile");
+  if (cartCountMobile) cartCountMobile.textContent = count;
   $("cartTotal").textContent = rupiah(total);
 
   if (!keranjang.length) {
@@ -321,6 +325,8 @@ function toggleFaq(i) {
 
 /* ---------- Init ---------- */
 $("cartOpen").onclick = () => bukaDrawer(true);
+const cartOpenMobile = $("cartOpenMobile");
+if (cartOpenMobile) cartOpenMobile.onclick = () => bukaDrawer(true);
 $("cartClose").onclick = () => bukaDrawer(false);
 $("overlay").onclick = () => bukaDrawer(false);
 $("checkoutBtn").onclick = checkout;
@@ -328,6 +334,8 @@ $("payBtn").onclick = () => bayarSekarang("auto");
 $("payQrisBtn").onclick = () => bayarSekarang("qris");
 $("clearBtn").onclick = () => { keranjang = []; simpan(); };
 $("waButton").href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo DikaDev! Saya mau tanya-tanya dulu.")}`;
+const waButton2 = $("waButton2");
+if (waButton2) waButton2.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo DikaDev! Saya mau tanya-tanya dulu.")}`;
 const mailBtn = $("emailButton");
 if (mailBtn) mailBtn.href = `mailto:${EMAIL}?subject=${encodeURIComponent("Tanya-tanya DikaDev Store")}`;
 

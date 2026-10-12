@@ -1,140 +1,762 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DikaDev Store — Solusi Digital</title>
-  <meta name="description" content="DikaDev Store — hosting game server, VPS, jasa website, dan layanan digital lainnya." />
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DikaDev Store — Solusi Digital</title>
+    <meta name="description" content="DikaDev Store — Panel Pterodactyl, Bot Telegram/WhatsApp custom, Bot PPOB, Nomor Virtual 190+ negara. Bayar via QRIS, VA, e-wallet.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#090A0F',
+                        darkCard: 'rgba(255, 255, 255, 0.03)',
+                        darkBorder: 'rgba(255, 255, 255, 0.08)',
+                        accentPrimary: '#7C3AED',
+                        accentSecondary: '#4F46E5',
+                        accentCyan: '#06B6D4',
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #090A0F;
+            color: #F3F4F6;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+        }
+        .glass-card-hover { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .glass-card-hover:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(124, 58, 237, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -10px rgba(124, 58, 237, 0.25);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #A78BFA 0%, #C084FC 50%, #38BDF8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-button {
+            background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 100%);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+            transition: all 0.3s ease;
+        }
+        .gradient-button:hover {
+            box-shadow: 0 6px 28px rgba(124, 58, 237, 0.6);
+            transform: translateY(-1px);
+        }
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #090A0F; }
+        ::-webkit-scrollbar-thumb { background: #1F2937; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+
+        /* ---- Product card extras ---- */
+        .product-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #7C3AED, #4F46E5);
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .product-logo { width: 48px; height: 48px; object-fit: contain; margin-bottom: 16px; }
+        .product-emoji { font-size: 40px; margin-bottom: 16px; line-height: 1; }
+
+        /* ---- FAQ accordion (dark) ---- */
+        .faq-item { margin-bottom: 16px; }
+        .faq-q {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 20px 24px;
+            font-weight: 600;
+            color: #fff;
+            text-align: left;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: 15px;
+        }
+        .faq-q:hover { color: #C4B5FD; }
+        .faq-q .arrow { color: #9CA3AF; transition: transform 0.2s; font-size: 12px; flex-shrink: 0; }
+        .faq-item.open .faq-q .arrow { transform: rotate(180deg); }
+        .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .faq-a p { padding: 0 24px 20px; font-size: 14px; color: #9CA3AF; line-height: 1.7; }
+        .faq-a a { color: #A78BFA; text-decoration: underline; }
+
+        /* ---- Cart drawer (dark) ---- */
+        .overlay {
+            position: fixed; inset: 0; z-index: 45;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .overlay.show { opacity: 1; pointer-events: auto; }
+        .drawer {
+            position: fixed; top: 0; right: 0; z-index: 50;
+            width: 100%; max-width: 400px; height: 100dvh;
+            background: #0D0E14;
+            border-left: 1px solid rgba(255,255,255,0.08);
+            display: flex; flex-direction: column;
+            transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+        }
+        .drawer.show { transform: translateX(0); }
+        .drawer-head {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .drawer-head h3 { font-size: 18px; font-weight: 700; color: #fff; }
+        .close-btn {
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            color: #9CA3AF; width: 36px; height: 36px; border-radius: 10px; cursor: pointer;
+        }
+        .close-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+        .drawer-items { flex: 1; overflow-y: auto; padding: 16px 24px; }
+        .drawer-items .empty { text-align: center; color: #6B7280; padding: 48px 0; font-size: 14px; line-height: 1.8; }
+        .cart-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px; padding: 14px 16px; margin-bottom: 12px;
+        }
+        .cart-item .row1 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .cart-item .name { font-size: 14px; font-weight: 600; color: #fff; }
+        .cart-item .rm { background: none; border: none; cursor: pointer; font-size: 15px; opacity: 0.6; }
+        .cart-item .rm:hover { opacity: 1; }
+        .cart-item .row2 { display: flex; justify-content: space-between; align-items: center; }
+        .cart-item .qty { display: flex; align-items: center; gap: 10px; }
+        .cart-item .qty button {
+            width: 28px; height: 28px; border-radius: 8px; cursor: pointer;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff;
+        }
+        .cart-item .qty button:hover { background: rgba(124,58,237,0.3); }
+        .cart-item .qty span { font-size: 14px; font-weight: 600; color: #fff; min-width: 20px; text-align: center; }
+        .cart-item .sub { font-size: 14px; font-weight: 700; color: #A78BFA; }
+        .drawer-foot { padding: 20px 24px 24px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .total-row span { color: #9CA3AF; font-size: 14px; }
+        .total-row strong { color: #fff; font-size: 22px; font-weight: 800; }
+        .drawer-foot .btn-full {
+            width: 100%; display: block; text-align: center;
+            padding: 13px; border-radius: 12px; font-weight: 600; font-size: 14px;
+            margin-bottom: 10px; cursor: pointer; border: none; color: #fff;
+        }
+        .btn-pay { background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 100%); box-shadow: 0 4px 20px rgba(124,58,237,0.4); }
+        .btn-pay:hover { box-shadow: 0 6px 28px rgba(124,58,237,0.6); }
+        .btn-pay:disabled { opacity: 0.5; cursor: wait; }
+        .btn-qris { background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.4); color: #67E8F9; }
+        .btn-qris:hover { background: rgba(6,182,212,0.25); }
+        .btn-ghost-dark { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #D1D5DB; }
+        .btn-ghost-dark:hover { background: rgba(255,255,255,0.08); color: #fff; }
+        .pay-status {
+            font-size: 13px; color: #FCA5A5; background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.25); border-radius: 12px;
+            padding: 12px 14px; margin-bottom: 10px; line-height: 1.6;
+        }
+        .pay-status.ok { color: #6EE7B7; background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.25); }
+        .pay-status .pay-wa { color: #A78BFA; font-weight: 700; text-decoration: underline; }
+
+        /* ---- Toast ---- */
+        .toast {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+            z-index: 60; background: rgba(17,18,26,0.95);
+            border: 1px solid rgba(124,58,237,0.4); color: #fff;
+            padding: 12px 24px; border-radius: 12px; font-size: 14px;
+            opacity: 0; pointer-events: none; transition: all 0.3s;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5); white-space: nowrap;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ---- Cart button badge ---- */
+        .cart-btn { position: relative; }
+        .cart-count {
+            position: absolute; top: -6px; right: -6px;
+            background: linear-gradient(135deg, #7C3AED, #4F46E5);
+            color: #fff; font-size: 10px; font-weight: 700;
+            min-width: 20px; height: 20px; border-radius: 9999px;
+            display: flex; align-items: center; justify-content: center; padding: 0 5px;
+        }
+    </style>
 </head>
-<body>
-  <header class="nav">
-    <div class="nav-inner">
-      <a class="logo" href="#beranda">&lt;/&gt; DikaDev</a>
-      <nav class="nav-links">
-        <a href="#beranda">Beranda</a>
-        <a href="#produk">Produk</a>
-        <a href="#tentang">Tentang</a>
-        <a href="#faq">FAQ</a>
-        <a href="#kontak">Kontak</a>
-        <a href="tos.html">S&K</a>
-      </nav>
-      <button class="cart-btn" id="cartOpen" aria-label="Buka keranjang">
-        🛒 <span class="cart-count" id="cartCount">0</span>
-      </button>
-    </div>
-  </header>
+<body class="bg-darkBg text-gray-200 antialiased selection:bg-purple-500 selection:text-white">
 
-  <main>
-    <section class="hero" id="beranda">
-      <div class="hero-inner">
-        <span class="badge">Toko digital terpercaya</span>
-        <h1>Solusi Digital untuk <span class="accent">Kebutuhanmu</span></h1>
-        <p>Hosting game server, VPS, jasa pembuatan website, dan layanan digital lainnya — cepat, aman, harga bersahabat.</p>
-        <div class="hero-actions">
-          <a href="#produk" class="btn btn-primary">Lihat Produk</a>
-          <a href="#kontak" class="btn btn-ghost">Hubungi Kami</a>
+    <!-- Ambient Glowing Orbs -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-tr from-purple-900/30 via-indigo-900/20 to-cyan-900/20 blur-[130px] rounded-full pointer-events-none -z-10 animate-pulse-slow"></div>
+    <div class="fixed top-[40%] right-[-10%] w-[500px] h-[500px] bg-purple-900/15 blur-[140px] rounded-full pointer-events-none -z-10"></div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-darkBg/70 border-b border-white/5 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/25 group-hover:scale-105 transition-transform font-mono font-bold text-sm">
+                    &lt;/&gt;
+                </div>
+                <span class="text-xl font-bold tracking-tight text-white">
+                    Dika<span class="gradient-text font-extrabold">Dev</span>
+                </span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+                <a href="#produk" class="hover:text-white transition-colors">Produk</a>
+                <a href="#cara-order" class="hover:text-white transition-colors">Cara Order</a>
+                <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+                <a href="#kontak" class="hover:text-white transition-colors">Kontak</a>
+                <a href="cek-domain.html" class="hover:text-white transition-colors">Cek Domain</a>
+            </nav>
+
+            <div class="hidden md:flex items-center gap-3">
+                <button id="cartOpen" class="cart-btn glass-card hover:bg-white/10 text-white p-2.5 rounded-xl border border-white/10 transition" aria-label="Buka keranjang">
+                    <i class="ph-bold ph-shopping-cart text-xl"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <a href="#produk" class="gradient-button text-sm font-semibold text-white px-5 py-2.5 rounded-full flex items-center gap-2">
+                    Order Sekarang
+                    <i class="ph-bold ph-arrow-right text-xs"></i>
+                </a>
+            </div>
+
+            <div class="flex md:hidden items-center gap-2">
+                <button id="cartOpenMobile" class="cart-btn glass-card text-white p-2.5 rounded-xl border border-white/10" aria-label="Buka keranjang">
+                    <i class="ph-bold ph-shopping-cart text-xl"></i>
+                    <span class="cart-count" id="cartCountMobile">0</span>
+                </button>
+                <button id="mobile-menu-btn" class="text-gray-400 hover:text-white p-2">
+                    <i class="ph-bold ph-list text-2xl"></i>
+                </button>
+            </div>
         </div>
-        <div class="hero-stats">
-          <div><strong>24/7</strong><span>Server Online</span></div>
-          <div><strong>100+</strong><span>Pelanggan Puas</span></div>
-          <div><strong>Fast</strong><span>Respon Cepat</span></div>
+
+        <div id="mobile-menu" class="hidden md:hidden border-b border-white/10 bg-darkBg/95 px-6 py-6 space-y-4">
+            <a href="#produk" class="block text-gray-300 hover:text-white py-1">Produk</a>
+            <a href="#cara-order" class="block text-gray-300 hover:text-white py-1">Cara Order</a>
+            <a href="#faq" class="block text-gray-300 hover:text-white py-1">FAQ</a>
+            <a href="#kontak" class="block text-gray-300 hover:text-white py-1">Kontak</a>
+            <a href="cek-domain.html" class="block text-gray-300 hover:text-white py-1">Cek Domain</a>
+            <div class="pt-4 border-t border-white/10">
+                <a href="#produk" class="w-full gradient-button text-center text-white py-3 rounded-xl font-semibold block">Order Sekarang</a>
+            </div>
         </div>
-      </div>
-    </section>
+    </header>
 
-    <section class="products" id="produk">
-      <div class="section-inner">
-        <h2>Produk Kami</h2>
-        <p class="section-sub">Pilih layanan yang kamu butuhkan. Klik tambah untuk masuk keranjang.</p>
-        <!--
-          CARA GANTI PRODUK:
-          Buka file app.js, edit daftar PRODUK di bagian atas.
-          Format: { nama, harga (angka rupiah), deskripsi, badge (opsional) }
-        -->
-        <div class="grid" id="productGrid"></div>
-      </div>
-    </section>
+    <main class="relative bg-grid">
 
-    <section class="about" id="tentang">
-      <div class="section-inner">
-        <h2>Tentang DikaDev</h2>
-        <p>DikaDev adalah toko layanan digital yang fokus pada kebutuhan gamer, developer, dan pemilik bisnis kecil. Kami mengutamakan server yang stabil, harga transparan tanpa biaya tersembunyi, dan bantuan teknis yang responsif.</p>
-        <div class="features">
-          <div class="feature"><span>⚡</span><h3>Cepat</h3><p>Aktivasi layanan maksimal 1x24 jam setelah pembayaran.</p></div>
-          <div class="feature"><span>🔒</span><h3>Aman</h3><p>Data dan server kamu dilindungi dengan standar keamanan modern.</p></div>
-          <div class="feature"><span>💬</span><h3>Support</h3><p>Butuh bantuan? Tim kami siap lewat WhatsApp setiap hari.</p></div>
+        <!-- Hero Section -->
+        <section class="relative pt-12 pb-24 lg:pt-20 lg:pb-32 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-purple-500/20 text-xs sm:text-sm font-medium text-purple-300 mb-8">
+                    <span class="flex h-2 w-2 rounded-full bg-purple-400 animate-ping"></span>
+                    <span class="flex items-center gap-1.5">
+                        <i class="ph-fill ph-sparkle text-purple-400"></i>
+                        Toko digital terpercaya
+                    </span>
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1] max-w-4xl mx-auto mb-6">
+                    Solusi Digital untuk <span class="gradient-text">Kebutuhanmu</span>
+                </h1>
+
+                <p class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+                    Panel Pterodactyl, bot Telegram &amp; WhatsApp custom, bot PPOB, dan nomor virtual 190+ negara — cepat, aman, harga bersahabat.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                    <a href="#produk" class="w-full sm:w-auto gradient-button text-white font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2 text-base">
+                        Lihat Produk
+                        <i class="ph-bold ph-arrow-right text-sm"></i>
+                    </a>
+                    <a id="waButton" href="#" target="_blank" rel="noopener" class="w-full sm:w-auto glass-card hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2.5 text-base border border-white/10 transition">
+                        <i class="ph-fill ph-whatsapp-logo text-green-400 text-lg"></i>
+                        Chat WhatsApp
+                    </a>
+                </div>
+
+                <!-- Hero Preview Mockup: Live Order -->
+                <div class="relative max-w-5xl mx-auto mt-4 rounded-2xl glass-card p-2 sm:p-4 border border-white/10 shadow-2xl shadow-purple-950/50">
+                    <div class="bg-gray-950/90 rounded-xl overflow-hidden border border-white/5">
+
+                        <div class="h-11 px-4 border-b border-white/5 bg-gray-900/50 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                            </div>
+                            <div class="px-3 py-1 bg-white/5 rounded-md text-xs font-mono text-gray-400 flex items-center gap-2">
+                                <i class="ph ph-lock-key text-xs text-green-400"></i>
+                                dikadev.web.id
+                            </div>
+                            <div class="flex items-center gap-2 text-gray-500 text-xs">
+                                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span> Order Aktif
+                            </div>
+                        </div>
+
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+
+                            <div class="space-y-4">
+                                <div class="glass-card p-4 rounded-xl border border-white/5">
+                                    <div class="text-xs font-medium text-gray-400 mb-1">Produk Terlaris</div>
+                                    <div class="text-xl font-bold text-white flex items-center justify-between">
+                                        Panel Pterodactyl
+                                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-normal">Rp20rb/bln</span>
+                                    </div>
+                                    <div class="w-full bg-gray-800 rounded-full h-1.5 mt-3 overflow-hidden">
+                                        <div class="bg-gradient-to-r from-purple-500 to-cyan-400 h-1.5 rounded-full w-[92%] animate-pulse"></div>
+                                    </div>
+                                </div>
+
+                                <div class="glass-card p-4 rounded-xl border border-white/5 space-y-3">
+                                    <div class="text-xs font-semibold text-gray-400 tracking-wider uppercase">Kategori</div>
+                                    <div class="flex items-center justify-between text-sm py-1 border-b border-white/5">
+                                        <span class="flex items-center gap-2 text-gray-300"><i class="ph-bold ph-server text-purple-400"></i> Panel &amp; Hosting</span>
+                                        <span class="text-xs text-emerald-400">Ready</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm py-1 border-b border-white/5">
+                                        <span class="flex items-center gap-2 text-gray-300"><i class="ph-bold ph-robot text-cyan-400"></i> Bot Custom</span>
+                                        <span class="text-xs text-emerald-400">Ready</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm py-1">
+                                        <span class="flex items-center gap-2 text-gray-300"><i class="ph-bold ph-sim-card text-indigo-400"></i> Nomor Virtual</span>
+                                        <span class="text-xs text-emerald-400">190+ negara</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="md:col-span-2 glass-card p-5 rounded-xl border border-white/5 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h4 class="text-sm font-semibold text-gray-300 flex items-center gap-2">
+                                            <i class="ph-bold ph-receipt text-purple-400"></i>
+                                            Alur Order Real-Time
+                                        </h4>
+                                        <span class="text-xs text-gray-500 font-mono">maks 1x24 jam</span>
+                                    </div>
+
+                                    <div class="space-y-2.5 font-mono text-xs">
+                                        <div class="p-2.5 rounded bg-black/40 border border-white/5 text-gray-300 flex items-start gap-2">
+                                            <span class="text-purple-400">[1]</span>
+                                            <span>Pilih produk → masuk keranjang → klik Bayar Sekarang.</span>
+                                        </div>
+                                        <div class="p-2.5 rounded bg-black/40 border border-white/5 text-gray-300 flex items-start gap-2">
+                                            <span class="text-cyan-400">[2]</span>
+                                            <span>Bayar via QRIS, Virtual Account, e-wallet, atau gerai retail.</span>
+                                        </div>
+                                        <div class="p-2.5 rounded bg-black/40 border border-white/5 text-emerald-400 flex items-start gap-2">
+                                            <span class="text-emerald-500">[3]</span>
+                                            <span>LUNAS → layanan diproses &amp; dikirim ke WhatsApp kamu.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-gray-400">
+                                    <span class="flex items-center gap-1.5"><i class="ph-bold ph-shield-check text-purple-400"></i> Garansi 7 hari</span>
+                                    <a href="#cara-order" class="text-purple-300 hover:underline cursor-pointer">Lihat cara order</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Payment Methods Bar -->
+                <div class="mt-20">
+                    <p class="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-8">Metode pembayaran lengkap</p>
+                    <div class="flex flex-wrap items-center justify-center gap-8 sm:gap-14 opacity-70 hover:opacity-100 transition-opacity">
+                        <div class="flex items-center gap-2 font-bold text-gray-400 text-lg hover:text-white transition">
+                            <i class="ph-bold ph-qr-code text-2xl text-purple-400"></i> QRIS
+                        </div>
+                        <div class="flex items-center gap-2 font-bold text-gray-400 text-lg hover:text-white transition">
+                            <i class="ph-bold ph-bank text-2xl text-cyan-400"></i> Virtual Account
+                        </div>
+                        <div class="flex items-center gap-2 font-bold text-gray-400 text-lg hover:text-white transition">
+                            <i class="ph-bold ph-wallet text-2xl text-indigo-400"></i> E-Wallet
+                        </div>
+                        <div class="flex items-center gap-2 font-bold text-gray-400 text-lg hover:text-white transition">
+                            <i class="ph-bold ph-storefront text-2xl text-pink-400"></i> Gerai Retail
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Features Bento Grid Section -->
+        <section id="fitur" class="py-24 border-t border-white/5 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-xs font-bold text-purple-400 uppercase tracking-widest mb-3">Kenapa DikaDev</h2>
+                    <p class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Semua yang kamu butuhkan dalam satu toko</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <div class="md:col-span-2 glass-card glass-card-hover p-8 sm:p-10 relative overflow-hidden group">
+                        <div class="absolute -top-12 -right-12 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl group-hover:bg-purple-600/20 transition"></div>
+
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-6">
+                            <i class="ph-bold ph-credit-card text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Pembayaran Lengkap &amp; Otomatis</h3>
+                        <p class="text-gray-400 max-w-xl mb-8 text-sm sm:text-base leading-relaxed">
+                            Bayar langsung dari website tanpa chat dulu. QRIS untuk total berapapun, Virtual Account semua bank besar, e-wallet, sampai tunai di Indomaret/Alfamart.
+                        </p>
+
+                        <div class="glass-card p-4 rounded-xl border border-white/10 bg-black/40">
+                            <div class="flex items-center justify-between text-xs text-gray-400 border-b border-white/5 pb-3 mb-3">
+                                <span class="font-semibold text-white">Metode Tersedia</span>
+                                <span class="text-purple-400">Otomatis 24/7</span>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <div class="p-3 rounded-lg bg-white/5 border border-purple-500/30 flex flex-col gap-1 text-center">
+                                    <i class="ph-bold ph-qr-code text-xl text-purple-300 mx-auto"></i>
+                                    <span class="text-[11px] text-gray-400">QRIS</span>
+                                </div>
+                                <div class="p-3 rounded-lg bg-white/5 border border-white/10 flex flex-col gap-1 text-center">
+                                    <i class="ph-bold ph-bank text-xl text-cyan-300 mx-auto"></i>
+                                    <span class="text-[11px] text-gray-400">VA Bank</span>
+                                </div>
+                                <div class="p-3 rounded-lg bg-white/5 border border-white/10 flex flex-col gap-1 text-center">
+                                    <i class="ph-bold ph-wallet text-xl text-indigo-300 mx-auto"></i>
+                                    <span class="text-[11px] text-gray-400">E-Wallet</span>
+                                </div>
+                                <div class="p-3 rounded-lg bg-white/5 border border-white/10 flex flex-col gap-1 text-center">
+                                    <i class="ph-bold ph-storefront text-xl text-pink-300 mx-auto"></i>
+                                    <span class="text-[11px] text-gray-400">Gerai Retail</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card glass-card-hover p-8 sm:p-10 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-6">
+                                <i class="ph-bold ph-lightning text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-3">Aktivasi Kilat</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                                Layanan diproses maksimal 1x24 jam setelah pembayaran terkonfirmasi. Kebanyakan order selesai jauh lebih cepat.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-300 border border-white/10">Panel</span>
+                            <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-300 border border-white/10">Bot Custom</span>
+                            <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-300 border border-white/10">Nokos</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-card glass-card-hover p-8 sm:p-10 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 mb-6">
+                                <i class="ph-bold ph-shield-check text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-3">Garansi 7 Hari</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Jasa install dan produk panel bergaransi 7 hari untuk kendala teknis dari sisi kami. Klaim cukup chat WhatsApp.
+                            </p>
+                        </div>
+                        <div class="mt-6 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
+                            <i class="ph-bold ph-check-circle text-base"></i>
+                            Refund penuh jika layanan gagal diserahkan
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-2 glass-card glass-card-hover p-8 sm:p-10 relative overflow-hidden group flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400 mb-6">
+                                <i class="ph-bold ph-robot text-2xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-3">CS AI 24 Jam Nonstop</h3>
+                            <p class="text-gray-400 max-w-xl text-sm sm:text-base leading-relaxed">
+                                Ada pertanyaan soal produk, harga, atau cara order jam 3 pagi? Chat <a href="https://t.me/csdikadevbot" target="_blank" rel="noopener" class="text-purple-300 hover:underline font-semibold">@csdikadevbot</a> di Telegram — CS AI kami jawab kapanpun. Butuh manusia? Lanjut ke WhatsApp admin.
+                            </p>
+                        </div>
+
+                        <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-white/5 pt-6 text-center">
+                            <div>
+                                <div class="text-2xl font-bold text-white">24/7</div>
+                                <div class="text-xs text-gray-400">CS AI Online</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-white">1x24j</div>
+                                <div class="text-xs text-gray-400">Maks. Aktivasi</div>
+                            </div>
+                            <div class="col-span-2 sm:col-span-1">
+                                <div class="text-2xl font-bold text-white">100+</div>
+                                <div class="text-xs text-gray-400">Pelanggan Puas</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="cara-order" class="py-24 border-t border-white/5 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="text-center max-w-3xl mx-auto mb-20">
+                    <h2 class="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-3">Gampang Banget</h2>
+                    <p class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Tiga langkah langsung jadi</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+
+                    <div class="glass-card p-8 rounded-2xl border border-white/10 relative">
+                        <div class="text-5xl font-black text-purple-500/20 mb-6 font-mono">01</div>
+                        <h3 class="text-xl font-bold text-white mb-3">Pilih Produk</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                            Scroll ke katalog, klik tombol "+ Keranjang" di produk yang kamu mau, lalu buka keranjang.
+                        </p>
+                        <div class="p-3 rounded-lg bg-black/40 border border-white/5 text-xs text-gray-300 flex items-center justify-between">
+                            <span>Keranjang:</span>
+                            <span class="text-emerald-400 font-semibold flex items-center gap-1">
+                                <i class="ph-bold ph-check"></i> Tersimpan otomatis
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-8 rounded-2xl border border-white/10 relative">
+                        <div class="text-5xl font-black text-cyan-500/20 mb-6 font-mono">02</div>
+                        <h3 class="text-xl font-bold text-white mb-3">Bayar</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                            Klik "Bayar Sekarang" untuk QRIS / VA / e-wallet otomatis, atau "Checkout via WhatsApp" kalau mau tanya dulu.
+                        </p>
+                        <div class="p-3 rounded-lg bg-black/40 border border-white/5 text-xs text-gray-300 flex items-center justify-between font-mono">
+                            <span class="truncate">QRIS • VA • E-Wallet</span>
+                            <span class="text-purple-400 font-semibold">Otomatis</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-8 rounded-2xl border border-white/10 relative">
+                        <div class="text-5xl font-black text-indigo-500/20 mb-6 font-mono">03</div>
+                        <h3 class="text-xl font-bold text-white mb-3">Layanan Aktif</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                            Setelah lunas, layanan diproses maksimal 1x24 jam dan detailnya dikirim ke WhatsApp kamu.
+                        </p>
+                        <div class="p-3 rounded-lg bg-black/40 border border-white/5 text-xs text-gray-300 flex items-center justify-between">
+                            <span>Status order:</span>
+                            <span class="text-cyan-400 font-semibold">Dipantau otomatis</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section id="stats" class="py-24 border-t border-white/5 bg-white/[0.01]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div class="p-6 glass-card rounded-2xl border border-white/5">
+                        <div class="text-4xl sm:text-5xl font-extrabold text-white mb-2">24/7</div>
+                        <div class="text-xs sm:text-sm text-gray-400">Server &amp; CS AI Online</div>
+                    </div>
+                    <div class="p-6 glass-card rounded-2xl border border-white/5">
+                        <div class="text-4xl sm:text-5xl font-extrabold text-purple-400 mb-2">100+</div>
+                        <div class="text-xs sm:text-sm text-gray-400">Pelanggan Puas</div>
+                    </div>
+                    <div class="p-6 glass-card rounded-2xl border border-white/5">
+                        <div class="text-4xl sm:text-5xl font-extrabold text-cyan-400 mb-2">190+</div>
+                        <div class="text-xs sm:text-sm text-gray-400">Negara Nomor Virtual</div>
+                    </div>
+                    <div class="p-6 glass-card rounded-2xl border border-white/5">
+                        <div class="text-4xl sm:text-5xl font-extrabold text-indigo-400 mb-2">7 hari</div>
+                        <div class="text-xs sm:text-sm text-gray-400">Garansi Layanan</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="produk" class="py-24 border-t border-white/5 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h2 class="text-xs font-bold text-purple-400 uppercase tracking-widest mb-3">Katalog</h2>
+                    <p class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-6">Produk Kami</p>
+                    <p class="text-gray-400 text-sm sm:text-base">Pilih layanan yang kamu butuhkan. Klik "+ Keranjang" lalu bayar — semudah itu.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="productGrid"></div>
+
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="py-24 border-t border-white/5 relative">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="text-center mb-16">
+                    <h2 class="text-xs font-bold text-purple-400 uppercase tracking-widest mb-3">Tanya Jawab</h2>
+                    <p class="text-3xl sm:text-4xl font-bold text-white">Pertanyaan Umum</p>
+                </div>
+
+                <div id="faqList"></div>
+
+            </div>
+        </section>
+
+        <!-- Bottom Call to Action Banner -->
+        <section id="kontak" class="py-20 border-t border-white/5 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="glass-card rounded-3xl p-10 sm:p-16 border border-purple-500/30 text-center relative overflow-hidden bg-gradient-to-br from-purple-950/40 via-darkBg to-indigo-950/40">
+
+                    <div class="absolute -top-24 -left-24 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-6 max-w-2xl mx-auto">
+                        Masih ragu? Tanya dulu aja.
+                    </h2>
+                    <p class="text-gray-300 text-base sm:text-lg max-w-xl mx-auto mb-10">
+                        Chat WhatsApp admin atau CS AI Telegram kami — fast respon setiap hari 09.00–21.00 WIB.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <a id="waButton2" href="#" target="_blank" rel="noopener" class="w-full sm:w-auto gradient-button text-white font-semibold px-8 py-4 rounded-full text-base flex items-center justify-center gap-2">
+                            <i class="ph-fill ph-whatsapp-logo text-lg"></i>
+                            Chat WhatsApp
+                        </a>
+                        <a href="https://t.me/csdikadevbot" target="_blank" rel="noopener" class="w-full sm:w-auto glass-card hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-full border border-white/10 text-base transition flex items-center justify-center gap-2">
+                            <i class="ph-fill ph-telegram-logo text-lg text-cyan-400"></i>
+                            CS Telegram 24 Jam
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-darkBg/90 py-16 text-gray-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-10 mb-12">
+
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white font-mono font-bold text-xs">
+                            &lt;/&gt;
+                        </div>
+                        <span class="text-lg font-bold text-white">DikaDev</span>
+                    </div>
+                    <p class="text-xs text-gray-400 max-w-sm leading-relaxed">
+                        Toko layanan digital: panel Pterodactyl, bot Telegram &amp; WhatsApp custom, bot PPOB, dan nomor virtual 190+ negara.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Toko</h4>
+                    <ul class="space-y-2.5 text-xs">
+                        <li><a href="#produk" class="hover:text-white transition">Produk</a></li>
+                        <li><a href="#cara-order" class="hover:text-white transition">Cara Order</a></li>
+                        <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
+                        <li><a href="cek-domain.html" class="hover:text-white transition">Cek Domain</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Bantuan</h4>
+                    <ul class="space-y-2.5 text-xs">
+                        <li><a href="tos.html" class="hover:text-white transition">Syarat &amp; Ketentuan</a></li>
+                        <li><a href="refund.html" class="hover:text-white transition">Kebijakan Refund</a></li>
+                        <li><a href="https://t.me/csdikadevbot" target="_blank" rel="noopener" class="hover:text-white transition">CS Telegram</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Kontak</h4>
+                    <ul class="space-y-2.5 text-xs">
+                        <li><a href="https://wa.me/6281337612241" target="_blank" rel="noopener" class="hover:text-white transition">WhatsApp</a></li>
+                        <li><a href="mailto:andhikaadi777@gmail.com" class="hover:text-white transition">andhikaadi777@gmail.com</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+                <div>&copy; 2026 DikaDev Store. Seluruh hak cipta dilindungi.</div>
+                <div class="text-gray-500">Jam operasional: 09.00 – 21.00 WIB</div>
+            </div>
         </div>
-      </div>
-    </section>
+    </footer>
 
-    <section class="faq" id="faq">
-      <div class="section-inner">
-        <h2>Pertanyaan Umum</h2>
-        <p class="section-sub">Jawaban cepat untuk hal yang paling sering ditanyakan.</p>
-        <!--
-          CARA GANTI FAQ:
-          Buka file app.js, edit daftar FAQ di bagian bawah (const FAQ).
-        -->
-        <div class="faq-list" id="faqList"></div>
-      </div>
-    </section>
-
-    <section class="contact" id="kontak">
-      <div class="section-inner">
-        <h2>Hubungi Kami</h2>
-        <p class="section-sub">Punya pertanyaan soal produk? Chat aja langsung.</p>
-        <div class="contact-btns">
-          <a class="btn btn-wa" id="waButton" href="#" target="_blank" rel="noopener">
-            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-            Chat WhatsApp
-          </a>
-          <a class="btn btn-tele" href="https://t.me/csdikadevbot" target="_blank" rel="noopener">
-            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#26A5E4"/><path fill="#fff" d="M16.906 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-            Chat Telegram
-          </a>
-          <a class="btn btn-ghost" id="emailButton" href="#">
-            <svg class="btn-icon" viewBox="0 0 24 20" aria-hidden="true"><path d="M5 2.5V16" stroke="#4285F4" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M19 2.5V16" stroke="#34A853" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M5 2.5L12 10L19 2.5" fill="none" stroke="#EA4335" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 2.5L15.5 6" stroke="#FBBC04" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
-            Email Kami
-          </a>
+    <!-- Cart Drawer -->
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Keranjang belanja">
+        <div class="drawer-head">
+            <h3>Keranjang</h3>
+            <button class="close-btn" id="cartClose" aria-label="Tutup keranjang">✕</button>
         </div>
-        <p class="note">CS Telegram kami AI yang siap jawab 24 jam · Jam operasional: 09.00 – 21.00 WIB</p>
-      </div>
-    </section>
-  </main>
+        <div class="drawer-items" id="cartItems"></div>
+        <div class="drawer-foot">
+            <div class="total-row"><span>Total</span><strong id="cartTotal">Rp0</strong></div>
+            <button class="btn-full btn-pay" id="payBtn">💳 Bayar Sekarang</button>
+            <button class="btn-full btn-qris" id="payQrisBtn">📱 Bayar via QRIS</button>
+            <div class="pay-status" id="payStatus" hidden></div>
+            <button class="btn-full btn-ghost-dark" id="checkoutBtn">Checkout via WhatsApp</button>
+            <button class="btn-full btn-ghost-dark" id="clearBtn">Kosongkan</button>
+        </div>
+    </aside>
 
-  <footer>
-    <p>&copy; 2026 DikaDev Store. Seluruh hak cipta dilindungi.</p>
-    <p style="margin-top:8px">
-      <a href="tos.html" style="color:var(--accent); text-decoration:none; margin:0 8px">Syarat & Ketentuan</a>·
-      <a href="refund.html" style="color:var(--accent); text-decoration:none; margin:0 8px">Kebijakan Refund</a>·
-      <a href="mailto:andhikaadi777@gmail.com" style="color:var(--accent); text-decoration:none; margin:0 8px">andhikaadi777@gmail.com</a>·
-      <a href="https://wa.me/6281337612241" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none; margin:0 8px">WhatsApp</a>·
-      <a href="https://t.me/csdikadevbot" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none; margin:0 8px">Telegram</a>
-    </p>
-  </footer>
+    <div class="toast" id="toast">Ditambahkan ke keranjang ✓</div>
 
-  <!-- Drawer keranjang -->
-  <div class="overlay" id="overlay"></div>
-  <aside class="drawer" id="drawer" aria-label="Keranjang belanja">
-    <div class="drawer-head">
-      <h3>Keranjang</h3>
-      <button class="close-btn" id="cartClose" aria-label="Tutup keranjang">✕</button>
-    </div>
-    <div class="drawer-items" id="cartItems"></div>
-    <div class="drawer-foot">
-      <div class="total-row"><span>Total</span><strong id="cartTotal">Rp0</strong></div>
-      <button class="btn btn-primary btn-full" id="payBtn">💳 Bayar Sekarang</button>
-      <button class="btn btn-qris btn-full" id="payQrisBtn">📱 Bayar via QRIS</button>
-      <div class="pay-status" id="payStatus" hidden></div>
-      <button class="btn btn-ghost btn-full" id="checkoutBtn">Checkout via WhatsApp</button>
-      <button class="btn btn-ghost btn-full" id="clearBtn">Kosongkan</button>
-    </div>
-  </aside>
-
-  <div class="toast" id="toast">Ditambahkan ke keranjang ✓</div>
-
-  <script src="https://solosmartpay.com/embed.js"></script>
-  <script src="app.js"></script>
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        // Tutup menu mobile saat link diklik
+        mobileMenu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+    </script>
+    <script src="https://solosmartpay.com/embed.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

@@ -1,39 +1,40 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Syarat & Ketentuan — DikaDev Store</title>
   <meta name="description" content="Syarat & Ketentuan dan Kebijakan Privasi DikaDev Store." />
-  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { darkBg: '#090A0F' }, fontFamily: { sans: ['Inter', 'sans-serif'] } } } }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    .tos { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
-    .tos h1 { text-align: center; margin-bottom: 8px; }
-    .tos .updated { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 40px; }
-    .tos h2 { text-align: left; font-size: 1.3rem; margin: 32px 0 12px; color: var(--accent); }
-    .tos ol, .tos ul { margin-left: 22px; color: var(--muted); display: flex; flex-direction: column; gap: 8px; }
-    .tos li::marker { color: var(--accent); }
-    .tos .back { display: inline-block; margin-bottom: 24px; color: var(--accent); text-decoration: none; }
-    .tos .back:hover { text-decoration: underline; }
+    body { font-family: 'Inter', sans-serif; background: #090A0F; color: #F3F4F6; }
+    .doc h2 { font-size: 1.25rem; font-weight: 700; color: #fff; margin: 2rem 0 0.75rem; }
+    .doc h2:first-of-type { margin-top: 0; }
+    .doc ol, .doc ul { margin-left: 1.375rem; color: #9CA3AF; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.95rem; line-height: 1.7; }
+    .doc li::marker { color: #A78BFA; }
+    .doc a { color: #A78BFA; }
+    .doc a:hover { text-decoration: underline; }
   </style>
 </head>
-<body>
-  <header class="nav">
-    <div class="nav-inner">
-      <a class="logo" href="index.html">&lt;/&gt; DikaDev</a>
-      <nav class="nav-links">
-        <a href="index.html#beranda">Beranda</a>
-        <a href="index.html#produk">Produk</a>
-        <a href="index.html#kontak">Kontak</a>
-      </nav>
-      <span></span>
+<body class="antialiased">
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#090A0F]/70 border-b border-white/5">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white font-mono font-bold text-xs">&lt;/&gt;</div>
+        <span class="font-bold text-white">DikaDev</span>
+      </a>
+      <a href="index.html" class="text-sm text-gray-400 hover:text-white transition">← Kembali ke toko</a>
     </div>
   </header>
 
-  <main class="tos">
-    <a class="back" href="index.html">← Kembali ke toko</a>
-    <h1>Syarat & Ketentuan</h1>
-    <p class="updated">Terakhir diperbarui: 30 September 2026</p>
+  <main class="doc max-w-3xl mx-auto px-4 py-14">
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-white text-center mb-2">Syarat &amp; Ketentuan</h1>
+    <p class="text-center text-gray-500 text-sm mb-12">Terakhir diperbarui: 30 September 2026</p>
 
     <h2>1. Layanan</h2>
     <ol>
@@ -42,10 +43,10 @@
       <li>Estimasi aktivasi maksimal 1x24 jam setelah pembayaran terkonfirmasi, kecuali disepakati lain.</li>
     </ol>
 
-    <h2>2. Pembayaran & Refund</h2>
+    <h2>2. Pembayaran &amp; Refund</h2>
     <ol>
       <li>Pembayaran dilakukan via transfer / e-wallet / metode yang disepakati saat order via WhatsApp.</li>
-      <li>Refund hanya diberikan jika layanan gagal diserahkan karena kesalahan dari pihak kami. Detail lengkapnya ada di halaman <a href="refund.html" style="color:var(--accent)">Kebijakan Refund</a>.</li>
+      <li>Refund hanya diberikan jika layanan gagal diserahkan karena kesalahan dari pihak kami. Detail lengkapnya ada di halaman <a href="refund.html">Kebijakan Refund</a>.</li>
       <li>Layanan yang sudah aktif atau sudah diserahkan (source code, akses panel) tidak dapat di-refund.</li>
     </ol>
 
@@ -61,7 +62,7 @@
       <li>Kami berhak menangguhkan atau menghentikan layanan tanpa refund jika aturan ini dilanggar.</li>
     </ol>
 
-    <h2>Kebijakan Privasi</h2>
+    <h2>5. Kebijakan Privasi</h2>
     <ol>
       <li>Data yang kami kumpulkan: nama, nomor WhatsApp, email, dan detail order — hanya untuk memproses pesanan dan komunikasi layanan.</li>
       <li>Data kamu tidak dijual atau dibagikan ke pihak ketiga untuk kepentingan pemasaran.</li>
@@ -69,18 +70,18 @@
       <li>Kamu dapat meminta penghapusan datamu kapan saja dengan menghubungi kami.</li>
     </ol>
 
-    <h2>5. Kontak</h2>
+    <h2>6. Kontak</h2>
     <ul>
-      <li>WhatsApp: <a href="https://wa.me/6281337612241" target="_blank" rel="noopener" style="color:var(--accent)">6281337612241</a></li>
-      <li>Email: <a href="mailto:andhikaadi777@gmail.com" style="color:var(--accent)">andhikaadi777@gmail.com</a></li>
+      <li>WhatsApp: <a href="https://wa.me/6281337612241" target="_blank" rel="noopener">6281337612241</a></li>
+      <li>Email: <a href="mailto:andhikaadi777@gmail.com">andhikaadi777@gmail.com</a></li>
     </ul>
   </main>
 
-  <footer>
+  <footer class="border-t border-white/10 py-10 text-center text-xs text-gray-500">
     <p>&copy; 2026 DikaDev Store. Seluruh hak cipta dilindungi.</p>
-    <p style="margin-top:8px">
-      <a href="tos.html" style="color:var(--accent); text-decoration:none; margin:0 8px">Syarat & Ketentuan</a>·
-      <a href="refund.html" style="color:var(--accent); text-decoration:none; margin:0 8px">Kebijakan Refund</a>
+    <p class="mt-3 space-x-4">
+      <a href="tos.html" class="text-purple-400 hover:underline">Syarat &amp; Ketentuan</a>
+      <a href="refund.html" class="text-purple-400 hover:underline">Kebijakan Refund</a>
     </p>
   </footer>
 </body>
